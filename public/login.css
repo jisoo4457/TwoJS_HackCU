@@ -2,7 +2,7 @@ body {
   font-family: "Varela Round", sans-serif;
 }
 .modal-login {
-  color: #636363;
+  color: black;
   width: 350px;
 }
 .modal-login .modal-content {
@@ -75,7 +75,7 @@ body {
 }
 .modal-login .btn:hover,
 .modal-login .btn:focus {
-  background: #45aba6;
+  background: black;
   outline: none;
 }
 .trigger-btn {
@@ -96,7 +96,7 @@ input {
 
 /* Style the submit button */
 input[type="submit"] {
-  background-color: #4caf50;
+  background-color: rgb(201, 36, 36);
   color: white;
 }
 
