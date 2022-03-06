@@ -9,12 +9,14 @@ const qs = require('query-string');
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));// Set the relative path; makes accessing the resource directory easier
+// app.use(express.static(__dirname + '/'));// Set the relative path; makes accessing the resource directory easier
+app.use(express.static("public"));
+
 
 
 // Home page - DON'T CHANGE
 app.get('/', function(req, res) {
-  res.render('pages/index.ejs', {
+  res.render('pages/home.ejs', {
     my_title: "NYTimes search",
     items: '',
     error: false,

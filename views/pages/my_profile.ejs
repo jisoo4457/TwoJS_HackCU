@@ -1,187 +1,279 @@
 <!doctype html>
-<html class="no-js" lang="">
-    <%-include('./partials/header.ejs')%>
-	<div class="container">
-		<br>
-		<div class="row">
-			<div class="col-4">
-				<div class="card">
-				<!-- TODO: Modify the ejs code below, to conditionally set the image_src to be from our chosen player -->
-					<% if(player_info){var img= player_info.img_src;} else {var image_src = '../resources/img/helmet.jpg'; }
-					var image_src = '../resources/img/helmet.jpg'; 
-					%>
-				 <img class="card-img-top" id="player_img" src="<%- player_info ? player_info.img_src : image_src %>" alt="Image of Football Player">
-				  <div class="card-body mx-auto">
-					<form class="form"action="/player_info/player" method="get">
-						<select class="custom-select" name="player_choice" onchange="this.form.submit()">
-							 <option selected>Select Player</option>
-							 <!-- TODO: Populate our select with player options
-							 			For each player, set a new option with a value matching the palyer's id,
-							 			but will display the player's name-->
-										 <% for(var i=0; i < player.length; i++) { %>
-											<option value="<%= player[i].id %>">
-											  <%=player[i].name %>
-											</option>
-										<% } %>
-						</select>
-					</form>
-				  </div>
+<html lang="en">
+  <html lang="en">
+<navbar>
+	<%-include('./partials/navbar.ejs')%>
+  </navbar>
+	
+  <head>
+	<link rel="stylesheet" href="profile2.css">
+    <link rel="stylesheet" href="profile1.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+	<%-include('./partials/header.ejs')%>
+	
+  </head>
+<div class="size">
+<body class="back size">
+	<main>
+		<div>
+			<div class="profile">
+				<div class="profile-image">
+					<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces" alt="">
+				</div>
+				<div class="profile-user-settings">
+					<h1 class="profile-user-name">janedoe_</h1>
+					<button class="btn profile-edit-btn">Edit Profile</button>
+					<button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
+				</div>
+				<div class="profile-stats">
+					<ul>
+						<li><span class="profile-stat-count">164</span> posts</li>
+						<li><span class="profile-stat-count">188</span> followers</li>
+						<li><span class="profile-stat-count">206</span> following</li>
+					</ul>
+	
+				</div>
+	
+				<div class="profile-bio">
+	
+					<p><span class="profile-real-name">Jane Doe</span>asdlkjsdlfjsdlk</p>
+	
 				</div>
 			</div>
-			<div class="col-8">
-				<div class="table-responsive">
-					<table class="table">
-						<tr>
-							<!-- TODO: Set Player Information
-							 			If a player has been selected, fill in their information in each of the fields below.
-							 		    You'll need to calculate here the player's average rushing, receiving, and passing yards.-->
-							<th>Year</th>
-							<td>	
-								<% if(player_info){var year= player_info.year}
-                                %>
-                                <%-year%>
-							</td>
-						</tr>
-						<tr>
-							<th>Major</th>
-							<td>	
-								<% if(player_info){var major= player_info.major}
-                                %>
-                                <%-major%>
-							</td>
-						</tr>
-						<tr>
-							<th>Games Played</th>
-							<td>	
-								<% if(player_game){var games = player_game}
-                                %>
-                                <%-games%>
-							</td>
-						</tr>
-						<tr>
-							<td>Passing Yards: <%- player_info.passing_yards %> </td> 
-							<td>Avg. Passing Yards: <% if(player_game != 0) {var avg= player_info.passing_yards / player_game } %>
-									<% if(player_game == 0){var avg= 0} %>
-									<%- avg.toFixed(3) %>
-							 </td>
-						</tr>
-						<tr>
-							<td>Rushing Yards: <%- player_info.rushing_yards %></td>
-							<td>Avg. Rushing Yards: <% if(player_game != 0){var avg=player_info.rushing_yards / player_game} %>
-                                <% if(player_game == 0){var avg = 0} %>
-                                <%- avg.toFixed(3) %>
+		</div>
+		<div class="container">
 
-							</td>
-						</tr>
-						<tr>
-							<td>Receiving Yards: <%- player_info.receiving_yards %></td>
-							<td>Avg. Receiving Yards: <% if(player_game != 0){var avg=player_info.receiving_yards / player_game} %>
-                                <% if(player_game == 0){var avg = 0} %>
-                                <%- avg.toFixed(3) %>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<!-- The forms for adding and removing a game are defined below.
-				 You should no have to make any changes to this section.
-		-->
-		<div class="row" >
-			<div class="col-4">	</div>
-			<div class="col-8">
-					<!-- select a form type  -->
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label" for="formtype">Data Input</label>
-							<div class="col-sm-10">
-								<select name="formtype" id="formtype_select" class="custom-select custom-select" onchange="switchPlayerForm(this, 'playerinfo_form')">
-									<option value="0" selected>Add Data</option>
-									<option value="1">Add a Player</option>
-									<option value="2">Add a Game</option>
-								</select>
-							</div>
-					</div>
-					<!-- form for adding a player  -->
-					<form action="/player_info/add_player" method="post" id="playerinfo_form-1" style="visibility: hidden; height: 0">
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label"  for="playerName">Player Name</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="player_name" id="playerName" placeholder="Enter Player Name">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label"  for="playerYear">Player Year</label>
-							<div class="col-sm-10">
-								<select class="form-control" name="player_year"  id="playerYear">
-						      <option value="FSH">Freshman</option>
-						      <option value="SPH">Sophomore</option>
-						      <option value="JNR">Junior</option>
-						      <option value="SNR">Senior</option>
-						    </select>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label"  for="playerMajor">Player Major</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="player_major" id="playerMajor" placeholder="The unique 4 character CU code (ex. CSCI, ATLS)" required pattern="[A-Z]{4}">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label"  for="playerPassingYards">Passing Yards</label>
-							<div class="col-sm-10">
-								<input type="number" class="form-control" name="player_passing_yards" id="playerPassingYards" placeholder="Enter Player Passing Yards"  min="0">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label"  for="playerRushingYards">Rushing Yards</label>
-							<div class="col-sm-10">
-								<input type="number" class="form-control" name="player_rushing_yards" id="playerRushingYards" placeholder="Enter Player Rushing Yards"  min="0">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label"  for="playerReceivingYards">Receiving Yards</label>
-							<div class="col-sm-10">
-								<input type="number" class="form-control" name="player_receiving_yards" id="playerReceivingYards" placeholder="Enter Player Receiving Yards"  min="0">
-							</div>
-						</div>
-						<input type="submit" value="submit" class="btn btn-primary btn-block">
-					</form>
-					<!-- form for adding a game  -->
-				<form action="/player_info/add_game" method="post" id="playerinfo_form-2" style="visibility: hidden; height: 0">
-					<div class="form-group row">
-						<label  class="col-sm-2 col-form-label" for="visitorName">Visitor Name</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" id="visitorName" name="visitor_name" placeholder="Enter Visitor Name">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label  class="col-sm-2 col-form-label" for="home_score">Home Score</label>
-						<div class="col-sm-10">
-							<input type="number" class="form-control" id="home_score" name="home_score" placeholder="Enter Home Score" min="0">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label  class="col-sm-2 col-form-label" for="visitor_score">Visitor Score</label>
-						<div class="col-sm-10">
-							<input type="number" class="form-control" id="visitor_score" name="visitor_score" placeholder="Enter Visitor Score" min="0">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label  class="col-sm-2 col-form-label" for="game_date">Game Date</label>
-						<div class="col-sm-10">
-							<input type="date" class="form-control" id="game_date" name="game_date" placeholder="Game Date">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label  class="col-sm-2 col-form-label" for="players">Players</label>
-						<div class="col-sm-10">
-							<input type="list" class="form-control" id="players" name="players" placeholder="Enter Players (ex. {0,1,2})" required pattern="\{(\d+,)*\d+\}">
-						</div>
-					</div>
-					<input type="submit" value="submit" class="btn btn-primary btn-block">
-				</form>
-			</div>
-		</div>
-	</div>
-    <%-include('./partials/footer')%>
+            <div class="gallery">
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1497445462247-4330a224fdb1?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-type">
+
+                        <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
+
+                    </div>
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 42</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1502630859934-b3b41d18206c?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-type">
+
+                        <span class="visually-hidden">Video</span><i class="fas fa-video" aria-hidden="true"></i>
+
+                    </div>
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 38</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1498471731312-b6d2b8280c61?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-type">
+
+                        <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
+
+                    </div>
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 47</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1515023115689-589c33041d3c?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 94</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 3</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-type">
+
+                        <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
+
+                    </div>
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 52</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 4</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1515814472071-4d632dbc5d4a?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 66</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1511407397940-d57f68e81203?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-type">
+
+                        <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>
+
+                    </div>
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 45</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1518481612222-68bbe828ecd1?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 34</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1505058707965-09a4469a87e4?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 41</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="gallery-item" tabindex="0">
+
+                    <img src="https://images.unsplash.com/photo-1423012373122-fff0a5d28cc9?w=500&h=500&fit=crop" class="gallery-image" alt="">
+
+                    <div class="gallery-item-type">
+
+                        <span class="visually-hidden">Video</span><i class="fas fa-video" aria-hidden="true"></i>
+
+                    </div>
+
+                    <div class="gallery-item-info">
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 30</li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- End of gallery -->
+
+            <div class="loader"></div>
+
+        </div>
+        <!-- End of container -->
+	
+		<footer><%-include('./partials/footer')%></footer>
+	</main>
+
+</body>
+</div>
+
 </html>
