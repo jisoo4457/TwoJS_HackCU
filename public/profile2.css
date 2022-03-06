@@ -367,3 +367,9 @@ img {
         transform: rotate(360deg);
     }
 }
+
+.achievements {
+    color:white; 
+    text-align: left;
+    font-family: "Lucida Console", "Courier New", monospace
+}
